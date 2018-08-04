@@ -14,7 +14,7 @@ PREFIX=/dockers
 PLEX_ROOT_PATH=${PREFIX}/plex
 PLEX_MOVIES=${PLEX_ROOT_PATH}/movies
 PLEX_TVSERIES=${PLEX_ROOT_PATH}/tvseries
-SRCPREFIX=/mnt/src
+SRCPREFIX=/mnt
 
 # Change the separator value to cater for paths with spaces
 OIFS="$IFS"
