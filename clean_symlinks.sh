@@ -17,7 +17,7 @@ function clean()
 		OUTPUT=$(readlink $MYPATH/$SYM)
 		if [[ -n $OUTPUT ]]
 		then
-			printf "Broken symlink: $(ls -l $MYPATH/$SYM)\n"
+			printf "Broken symlink: $(ls -l \"$MYPATH/$SYM\")\n"
 			printf "rm -f $MYPATH/$SYM\n"
 		fi
 	done
