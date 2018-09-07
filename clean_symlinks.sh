@@ -23,4 +23,4 @@ function clean()
 	done
 }
 
-clean /docker/plex/tvseries
+clean /dockers/plex/tvseries
