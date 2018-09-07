@@ -12,7 +12,7 @@
 function clean()
 {
 	MYPATH=$1
-	for SYM in $($MYPATH)
+	for SYM in $(ls -1 $MYPATH)
 	do
 		OUTPUT=$(readlink $MYPATH/$SYM)
 		if [[ -n $OUTPUT ]]
