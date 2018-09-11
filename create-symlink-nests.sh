@@ -15,8 +15,17 @@ PLEX_ROOT_PATH=${PREFIX}/plex
 PLEX_MOVIES=${PLEX_ROOT_PATH}/movies
 PLEX_TVSERIES=${PLEX_ROOT_PATH}/tvseries
 PLEX_ANIME=${PLEX_ROOT_PATH}/anime
-PLEX_ANIME=${PLEX_ROOT_PATH}/doccies
+PLEX_DOCCIES=${PLEX_ROOT_PATH}/doccies
+PLEX_ANIME_MOVIES=${PLEX_ROOT_PATH}/anime_movies
 SRCPREFIX=/mnt
+
+WHATTYPE=$1
+
+if [[ $# -lt 1 ]]
+then
+	printf "\nNo parameters supplied\nValid options: movies|tvseries|anime|doccies|anime_movies\n\n"
+	exit 0
+fi
 
 # Change the separator value to cater for paths with spaces
 OIFS="$IFS"
@@ -39,20 +48,21 @@ function exists_as_symlink()
 function scrape_mount_points()
 {
 	TYPE=$1
-	if [[ $TYPE = "movies" ]]
-	then
-		TARG=$PLEX_MOVIES
-	elif [[ $TYPE = "tvseries" ]]
-	then
-		TARG=$PLEX_TVSERIES
-	elif [[ $TYPE = "anime" ]]
-	then
-		TARG=$PLEX_ANIME
-	elif [[ $TYPE = "doccies" ]]
-	then
-		TARG=$PLEX_DOCCIES
-	fi
-	
+#	if [[ $TYPE = "movies" ]]
+#	then
+#		TARG=$PLEX_MOVIES
+#	elif [[ $TYPE = "tvseries" ]]
+#	then
+#		TARG=$PLEX_TVSERIES
+#	elif [[ $TYPE = "anime" ]]
+#	then
+#		TARG=$PLEX_ANIME
+#	elif [[ $TYPE = "doccies" ]]
+#	then
+#		TARG=$PLEX_DOCCIES
+#	fi
+
+	TARG=${PLEX_ROOT_PATH}/${TYPE}	
 
 	printf "TARG : $TARG\n"
 
@@ -71,10 +81,31 @@ function scrape_mount_points()
 ########
 # MAIN #
 ########
-scrape_mount_points movies
-scrape_mount_points tvseries
-scrape_mount_points anime
-scrape_mount_points doccies
+
+case $WHATTYPE in
+	movies)
+	  scrape_mount_points movies
+	;;
+	tvseries)
+	  scrape_mount_points tvseries
+	;;
+	anime)
+	  scrape_mount_points anime
+	;;
+	doccies)
+	  scrape_mount_points doccies
+	;;
+	anime_movies)
+	  scrape_mount_points anime_movies
+	;;
+	all)
+	  for IS in movies tvseries anime doccies anime_movies
+	  do
+		  scrape_mount_points $IS
+	  done
+	;;
+esac
 
 # Set separator back to default
 IFS="$OIFS"
+
