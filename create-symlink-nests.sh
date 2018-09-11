@@ -15,6 +15,7 @@ PLEX_ROOT_PATH=${PREFIX}/plex
 PLEX_MOVIES=${PLEX_ROOT_PATH}/movies
 PLEX_TVSERIES=${PLEX_ROOT_PATH}/tvseries
 PLEX_ANIME=${PLEX_ROOT_PATH}/anime
+PLEX_ANIME=${PLEX_ROOT_PATH}/doccies
 SRCPREFIX=/mnt
 
 # Change the separator value to cater for paths with spaces
@@ -47,7 +48,11 @@ function scrape_mount_points()
 	elif [[ $TYPE = "anime" ]]
 	then
 		TARG=$PLEX_ANIME
+	elif [[ $TYPE = "doccies" ]]
+	then
+		TARG=$PLEX_DOCCIES
 	fi
+	
 
 	printf "TARG : $TARG\n"
 
@@ -68,6 +73,7 @@ function scrape_mount_points()
 ########
 scrape_mount_points movies
 scrape_mount_points tvseries
+scrape_mount_points anime
 scrape_mount_points anime
 
 # Set separator back to default
