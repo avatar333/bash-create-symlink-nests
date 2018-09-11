@@ -74,7 +74,7 @@ function scrape_mount_points()
 scrape_mount_points movies
 scrape_mount_points tvseries
 scrape_mount_points anime
-scrape_mount_points anime
+scrape_mount_points doccies
 
 # Set separator back to default
 IFS="$OIFS"
