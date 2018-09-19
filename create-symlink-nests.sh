@@ -19,11 +19,22 @@ PLEX_DOCCIES=${PLEX_ROOT_PATH}/doccies
 PLEX_ANIME_MOVIES=${PLEX_ROOT_PATH}/anime_movies
 SRCPREFIX=/mnt
 
+# Text color variables
+TXTUND=$(tput sgr 0 1)          # Underline
+TXTBLD=$(tput bold)             # Bold
+BLDRED=${TXTBLD}$(tput setaf 1) # red
+BLDGRN=${TXTBLD}$(tput setaf 2) # green
+BLDYEL=${TXTBLD}$(tput setaf 3) # yellow
+BLDBLU=${TXTBLD}$(tput setaf 4) # blue
+BLDWHT=${TXTBLD}$(tput setaf 7) # white
+TXTRST=$(tput sgr0)             # Reset
+
+
 WHATTYPE=$1
 
 if [[ $# -lt 1 ]]
 then
-	printf "\nNo parameters supplied\nValid options: movies|tvseries|anime|doccies|anime_movies\n\n"
+	printf "\nNo parameters supplied\nValid options: movies|tvseries|anime|doccies|anime_movies|all\n\n"
 	exit 0
 fi
 
@@ -64,13 +75,13 @@ function scrape_mount_points()
 
 	TARG=${PLEX_ROOT_PATH}/${TYPE}	
 
-	printf "TARG : $TARG\n"
+	printf "TARGET : $TARG\n"
 
 	for SRCDIR in $(ls -1d $SRCPREFIX/src_*/${TYPE}/*)
 	do
 		if [[ $(exists_as_symlink $SRCDIR $TYPE) -eq 0 ]]
 		then
-			printf "ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"\n"
+			printf "${BLDGRN}ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"${TXTRST}\n"
 			printf "ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"\n" | /bin/bash
 		else
 			printf "Symlink already exists: $(ls -d $TARG/$(basename $SRCDIR))\n"
