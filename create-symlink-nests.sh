@@ -95,7 +95,7 @@ case $WHATTYPE in
 	tvseries)
 	  scrape_mount_points tvseries
 	;;
-	anime)
+	anime_series)
 	  scrape_mount_points anime_series
 	;;
 	doccies)
