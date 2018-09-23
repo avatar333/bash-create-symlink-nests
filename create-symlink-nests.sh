@@ -14,7 +14,7 @@ PREFIX=/dockers
 PLEX_ROOT_PATH=${PREFIX}/plex
 PLEX_MOVIES=${PLEX_ROOT_PATH}/movies
 PLEX_TVSERIES=${PLEX_ROOT_PATH}/tvseries
-PLEX_ANIME=${PLEX_ROOT_PATH}/anime
+PLEX_ANIME=${PLEX_ROOT_PATH}/anime_series
 PLEX_DOCCIES=${PLEX_ROOT_PATH}/doccies
 PLEX_ANIME_MOVIES=${PLEX_ROOT_PATH}/anime_movies
 SRCPREFIX=/mnt
@@ -101,7 +101,7 @@ case $WHATTYPE in
 	  scrape_mount_points tvseries
 	;;
 	anime)
-	  scrape_mount_points anime
+	  scrape_mount_points anime_series
 	;;
 	doccies)
 	  scrape_mount_points doccies
@@ -110,7 +110,7 @@ case $WHATTYPE in
 	  scrape_mount_points anime_movies
 	;;
 	all)
-	  for IS in movies tvseries anime doccies anime_movies
+	  for IS in movies tvseries anime_series doccies anime_movies
 	  do
 		  scrape_mount_points $IS
 	  done
