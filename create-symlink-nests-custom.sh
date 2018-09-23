@@ -24,18 +24,27 @@ BLDBLU=${TXTBLD}$(tput setaf 4) # blue
 BLDWHT=${TXTBLD}$(tput setaf 7) # white
 TXTRST=$(tput sgr0)             # Reset
 
-
-WHATTYPE=$1
-
 if [[ $# -lt 1 ]]
 then
-	printf "\nNo parameters supplied\nValid options: movies|tvseries|anime_series|doccies|anime_movies|all\n\n"
-	exit 0
+        printf "\nNo parameters supplied\nValid options: movies|tvseries|anime|doccies|anime_movies|all\n\n"
+        exit 0
 fi
 
 # Change the separator value to cater for paths with spaces
 OIFS="$IFS"
 IFS=$'\n'
+
+# Check if the directory exists at the target
+function directory_exists()
+{
+	DIRECTORY=$1
+	if [[ -d ${DIRECTORY} ]]
+	then
+		echo 1
+	else
+		echo 0
+	fi
+}
 
 # Check if the directory exists at the target and is a symlink
 function exists_as_symlink()
@@ -54,29 +63,25 @@ function exists_as_symlink()
 function scrape_mount_points()
 {
 	TYPE=$1
-#	if [[ $TYPE = "movies" ]]
-#	then
-#		TARG=$PLEX_MOVIES
-#	elif [[ $TYPE = "tvseries" ]]
-#	then
-#		TARG=$PLEX_TVSERIES
-#	elif [[ $TYPE = "anime" ]]
-#	then
-#		TARG=$PLEX_ANIME
-#	elif [[ $TYPE = "doccies" ]]
-#	then
-#		TARG=$PLEX_DOCCIES
-#	fi
+	SRCPATH=$2
+	if [[ $TYPE = "movies" ]]
+	then
+		TARG=$PLEX_MOVIES
+	elif [[ $TYPE = "tvseries" ]]
+	then
+		TARG=$PLEX_TVSERIES
+	fi
 
-	TARG=${PLEX_ROOT_PATH}/${TYPE}	
+	printf "TARG : $TARG\n"
 
-	printf "TARGET : $TARG\n"
+	TARG=/dockers/plex/Kishan_movies
+	SRCPATH=/mnt/src_media01-1TB/media-kishan/Movies
 
-	for SRCDIR in $(ls -1d $SRCPREFIX/src_*/${TYPE}/*)
+	for SRCDIR in $(ls -1d ${SRCPATH}/*)
 	do
 		if [[ $(exists_as_symlink $SRCDIR $TYPE) -eq 0 ]]
 		then
-			printf "${BLDGRN}ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"${TXTRST}\n"
+			printf "ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"\n"
 			printf "ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"\n" | /bin/bash
 		else
 			printf "Symlink already exists: $(ls -d $TARG/$(basename $SRCDIR))\n"
@@ -87,31 +92,16 @@ function scrape_mount_points()
 ########
 # MAIN #
 ########
+DOCKER_PLEX_DIRNAME=$1
+SRC_DIR=$2
 
-case $WHATTYPE in
-	movies)
-	  scrape_mount_points movies
-	;;
-	tvseries)
-	  scrape_mount_points tvseries
-	;;
-	anime)
-	  scrape_mount_points anime_series
-	;;
-	doccies)
-	  scrape_mount_points doccies
-	;;
-	anime_movies)
-	  scrape_mount_points anime_movies
-	;;
-	all)
-	  for IS in movies tvseries anime_series doccies anime_movies
-	  do
-		  scrape_mount_points $IS
-	  done
-	;;
-esac
+if [[ $(directory_exists $DOCKER_PLEX_DIRNAME) -eq 0 ]]
+then
+	printf "Directory ${BLDYEL}${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist, creating...\n"
+	printf "mkdir -p $DOCKER_PLEX_DIRNAME\n"
+else
+	printf "Directory ${BLDGRN}${DOCKER_PLEX_DIRNAME}${TXTRST} does exist\n"
+fi
 
 # Set separator back to default
 IFS="$OIFS"
-
