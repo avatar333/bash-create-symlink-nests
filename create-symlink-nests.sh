@@ -70,7 +70,7 @@ function scrape_mount_points()
 
 	TARG=${PLEX_ROOT_PATH}/${TYPE}	
 
-	printf "TARGET : $TARG\n"
+	printf "\n ${BLDWHT}TARGET : $TARG${TXTRST}\n"
 
 	for SRCDIR in $(ls -1d $SRCPREFIX/src_*/${TYPE}/*)
 	do
