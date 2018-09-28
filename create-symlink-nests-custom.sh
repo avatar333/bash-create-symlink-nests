@@ -26,7 +26,8 @@ TXTRST=$(tput sgr0)             # Reset
 
 if [[ $# -lt 1 ]]
 then
-        printf "\nNo parameters supplied\nValid options: movies|tvseries|anime|doccies|anime_movies|all\n\n"
+        printf "\nNo parameters supplied\n"
+	printf "USAGE: $(basename $0) <source directory> <link name in ${PLEX_ROOT_PATH}>\n\n"
         exit 0
 fi
 
@@ -60,7 +61,7 @@ function exists_as_symlink()
 }
 
 # Traverse mount points and create symlinks in target paths
-function scrape_mount_points()
+function create_symlinks()
 {
 	TYPE=$1
 	SRCPATH=$2
@@ -92,16 +93,28 @@ function scrape_mount_points()
 ########
 # MAIN #
 ########
-DOCKER_PLEX_DIRNAME=$1
-SRC_DIR=$2
+SRC_DIR=$1
+DOCKER_PLEX_DIRNAME=$2
 
-if [[ $(directory_exists $DOCKER_PLEX_DIRNAME) -eq 0 ]]
+if [[ $(exists_as_symlink ${PLEX_ROOT_PATH}/$DOCKER_PLEX_DIRNAME) -eq 0 ]]
 then
-	printf "Directory ${BLDYEL}${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist, creating...\n"
-	printf "mkdir -p $DOCKER_PLEX_DIRNAME\n"
+	printf "Directory ${BLDYEL}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist, creating...\n"
+#	printf "mkdir -p $DOCKER_PLEX_DIRNAME\n"
 else
-	printf "Directory ${BLDGRN}${DOCKER_PLEX_DIRNAME}${TXTRST} does exist\n"
+	printf "Symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}${TXTRST} already exists\n"
+	exit0
 fi
+
+if [[ $(directory_exists $SRC_DIR) -eq 0 ]]
+then
+	printf "Directory ${BLDYEL}${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist. Now EXITING...\n"
+	exit 0
+else
+	printf "Creating symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME} -> $SRC_DIR${TSTRST}\n"
+	printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
+#	printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
+fi
+
 
 # Set separator back to default
 IFS="$OIFS"
