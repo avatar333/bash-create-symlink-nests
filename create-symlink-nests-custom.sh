@@ -27,7 +27,7 @@ TXTRST=$(tput sgr0)             # Reset
 if [[ $# -lt 1 ]]
 then
         printf "\nNo parameters supplied\n"
-	printf "USAGE: $(basename $0) <full path to source directory> <link name in ${PLEX_ROOT_PATH}>\n\n"
+	printf "USAGE: $(basename $0) <full path to source directory>\n\n"
         exit 0
 fi
 
