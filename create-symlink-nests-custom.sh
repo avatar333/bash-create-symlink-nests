@@ -27,7 +27,7 @@ TXTRST=$(tput sgr0)             # Reset
 if [[ $# -lt 1 ]]
 then
         printf "\nNo parameters supplied\n"
-	printf "USAGE: $(basename $0) <source directory> <link name in ${PLEX_ROOT_PATH}>\n\n"
+	printf "USAGE: $(basename $0) <full path to source directory> <link name in ${PLEX_ROOT_PATH}>\n\n"
         exit 0
 fi
 
@@ -96,24 +96,19 @@ function create_symlinks()
 SRC_DIR=$1
 DOCKER_PLEX_DIRNAME=$2
 
-if [[ $(exists_as_symlink ${PLEX_ROOT_PATH}/$DOCKER_PLEX_DIRNAME) -eq 0 ]]
+if [[ $(exists_as_symlink ${PLEX_ROOT_PATH}/$(basename $SRC_DIR) -eq 0 ]]
 then
-	printf "Directory ${BLDYEL}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist, creating...\n"
+#	printf "Directory ${BLDYEL}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist, creating...\n"
 #	printf "mkdir -p $DOCKER_PLEX_DIRNAME\n"
+        printf "Creating symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME} -> $SRC_DIR${TSTRST}\n"
+        printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
+#       printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
+
 else
 	printf "Symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}${TXTRST} already exists\n"
-	exit0
+	exit 0
 fi
 
-if [[ $(directory_exists $SRC_DIR) -eq 0 ]]
-then
-	printf "Directory ${BLDYEL}${DOCKER_PLEX_DIRNAME}${TXTRST} does not exist. Now EXITING...\n"
-	exit 0
-else
-	printf "Creating symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME} -> $SRC_DIR${TSTRST}\n"
-	printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
-#	printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
-fi
 
 
 # Set separator back to default
