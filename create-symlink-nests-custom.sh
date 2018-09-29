@@ -100,7 +100,7 @@ if [[ $(exists_as_symlink ${PLEX_ROOT_PATH}/$(basename $SRC_DIR)) -eq 0 ]]
 then
         printf "Creating symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME} -> $SRC_DIR ${TXTRST}\n"
         printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
-#       printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n"
+        printf "ln -sf \"$SRC_DIR\" \"${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}/\"\n" | /bin/bash
 
 else
 	printf "Symlink ${BLDGRN}${PLEX_ROOT_PATH}/${DOCKER_PLEX_DIRNAME}${TXTRST} already exists\n"
