@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#title           :create-symlink-nests.sh
-#description     :A script to scrape mount points and create symlink nests
+#title           :create-symlink-nests-custom.sh
+#description     :A script to create custom Plex symlinks
 #author		 :Kevin Pillay
 #date            :20180627
 #version         :1.0
@@ -58,36 +58,6 @@ function exists_as_symlink()
 	else
 		echo 0
 	fi
-}
-
-# Traverse mount points and create symlinks in target paths
-function create_symlinks()
-{
-	TYPE=$1
-	SRCPATH=$2
-	if [[ $TYPE = "movies" ]]
-	then
-		TARG=$PLEX_MOVIES
-	elif [[ $TYPE = "tvseries" ]]
-	then
-		TARG=$PLEX_TVSERIES
-	fi
-
-	printf "TARG : $TARG\n"
-
-	TARG=/dockers/plex/Kishan_movies
-	SRCPATH=/mnt/src_media01-1TB/media-kishan/Movies
-
-	for SRCDIR in $(ls -1d ${SRCPATH}/*)
-	do
-		if [[ $(exists_as_symlink $SRCDIR $TYPE) -eq 0 ]]
-		then
-			printf "ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"\n"
-			printf "ln -sf \"$SRCDIR\" \"$TARG/$(basename $SRCDIR)\"\n" | /bin/bash
-		else
-			printf "Symlink already exists: $(ls -d $TARG/$(basename $SRCDIR))\n"
-		fi
-	done
 }
 
 ########
