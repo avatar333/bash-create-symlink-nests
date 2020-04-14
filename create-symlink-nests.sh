@@ -29,7 +29,7 @@ WHATTYPE=$1
 
 if [[ $# -lt 1 ]]
 then
-	printf "\nNo parameters supplied\nValid options: movies|tvseries|anime_series|doccies|anime_movies|all\n\n"
+	printf "\nNo parameters supplied\nValid options: movies|tvseries|anime_series|doccies_series|doccies_movies|anime_movies|all\n\n"
 	exit 0
 fi
 
@@ -98,14 +98,17 @@ case $WHATTYPE in
 	anime_series)
 	  scrape_mount_points anime_series
 	;;
-	doccies)
-	  scrape_mount_points doccies
+	doccies_series)
+	  scrape_mount_points doccies_series
 	;;
+        doccies_movies)
+          scrape_mount_points doccies_movies
+        ;;
 	anime_movies)
 	  scrape_mount_points anime_movies
 	;;
 	all)
-	  for IS in movies tvseries anime_series doccies anime_movies
+	  for IS in movies tvseries anime_series doccies_series doccies_movies anime_movies
 	  do
 		  scrape_mount_points $IS
 	  done
